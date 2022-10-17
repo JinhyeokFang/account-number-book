@@ -13,10 +13,13 @@ async function bootstrap() {
     app.use(compression());
     app.use(helmet());
     app.use(cookieParser());
-    app.enableCors({
-        credentials: true,
-        origin: configService.get('CLIENT_URL'),
-    });
+
+    if (configService.get('ENVIRONMENT') === 'development') {
+        app.enableCors({
+            credentials: true,
+            origin: configService.get('CLIENT_URL'),
+        });
+    }
 
     const config = new DocumentBuilder()
         .setTitle('API')
